@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spike.dao.SuccessSpikeDao">
+    
+    <insert id="insertSuccessSpike">
+        <!--ignore的作用是当主键冲突时不报错而是返回0-->
+        INSERT ignore INTO
+          success_spike(
+            spike_id,
+            user_phone
+          )
+        VALUES (#{spikeId}, #{userPhone});
+    </insert>
+
+    <select id="queryById" resultType="SuccessSpike">
+        SELECT
+          ss.spike_id,
+          ss.user_phone,
+          ss.state,
+          ss.create_time,
+          s.spike_id "spike.spike_id",
+          s.name "spike.name",
+          s.number "spike.number",
+          s.start_time "spike.start_time",
+          s.end_time "spike.end_time",
+          s.create_time "spike.create_time"
+        FROM
+          success_spike ss
+          INNER JOIN spike s
+          ON ss.spike_id=s.spike_id
+          WHERE ss.spike_id=#{spikeId};
+    </select>
+
+</mapper>
