@@ -27,6 +27,7 @@
 
     <select id="queryAll" resultType="Spike">
         SELECT
+          spike_id,
           name,
           number,
           start_time,

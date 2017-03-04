@@ -12,7 +12,7 @@ public class Spike {
 
     private long spikeId;
     private String name;
-    private int nubmer;
+    private int number;
     private Date startTime;
     private Date endTime;
     private Date createTime;
@@ -33,12 +33,12 @@ public class Spike {
         this.name = name;
     }
 
-    public int getNubmer() {
-        return nubmer;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNubmer(int nubmer) {
-        this.nubmer = nubmer;
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public Date getStartTime() {
@@ -70,7 +70,7 @@ public class Spike {
         return "Spike{" +
                 "spikeId=" + spikeId +
                 ", name='" + name + '\'' +
-                ", nubmer=" + nubmer +
+                ", number=" + number +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 ", createTime=" + createTime +

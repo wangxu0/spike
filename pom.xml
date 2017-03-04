@@ -6,6 +6,7 @@
 
     <groupId>com.spike</groupId>
     <artifactId>spike</artifactId>
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <dependencies>
@@ -113,6 +114,5 @@
         </dependency>
 
     </dependencies>
-
 
 </project>

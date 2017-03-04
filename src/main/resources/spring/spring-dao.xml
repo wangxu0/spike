@@ -29,7 +29,7 @@ http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springfr
         <!--配置MyBatis全局配置文件-->
         <property name="configLocation" value="classpath:mybatis/mybatis-config.xml"/>
         <property name="typeAliasesPackage" value="com.spike.pojo"/>
-        <property name="mapperLocations" value="mybatis/mapper/*.xml"/>
+        <property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"/>
     </bean>
     <!--配置扫描DAO接口包，动态实现DAO接口，注入到spring中-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

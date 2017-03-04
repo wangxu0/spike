@@ -2,9 +2,10 @@ package com.spike.enums;
 
 /**
  * 状态常量枚举
+ *
  * @author wangxu
- * blog：http://www.cnblogs.com/wxisme/
- * github：https://github.com/wxisme
+ *         blog：http://www.cnblogs.com/wxisme/
+ *         github：https://github.com/wxisme
  */
 public enum StateEnum {
     SUCCESS(1, "秒杀成功"),

@@ -2,9 +2,10 @@ package com.spike.dto;
 
 /**
  * 封装json返回结果
+ *
  * @author wangxu
- * blog：http://www.cnblogs.com/wxisme/
- * github：https://github.com/wxisme
+ *         blog：http://www.cnblogs.com/wxisme/
+ *         github：https://github.com/wxisme
  */
 public class SpikeResult<T> {
 

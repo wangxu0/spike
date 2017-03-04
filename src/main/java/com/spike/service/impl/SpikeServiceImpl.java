@@ -23,9 +23,10 @@ import java.util.List;
 
 /**
  * SpikeService接口实现
+ *
  * @author wangxu
- * blog：http://www.cnblogs.com/wxisme/
- * github：https://github.com/wxisme
+ *         blog：http://www.cnblogs.com/wxisme/
+ *         github：https://github.com/wxisme
  */
 
 @Service
@@ -51,7 +52,7 @@ public class SpikeServiceImpl implements SpikeService {
     }
 
     public Exposer exportSpikeUrl(long spikeId) {
-        Spike  spike = spikeDao.queryById(spikeId);
+        Spike spike = spikeDao.queryById(spikeId);
         if (spike == null) {
             return new Exposer(false, spikeId);
         }
@@ -68,28 +69,26 @@ public class SpikeServiceImpl implements SpikeService {
     }
 
     /**
-     *使用基于注解的声明式事务能够提醒开发人员注意。
-     *在事务方法中不要穿插网络请求RPC，HTTP等。
-     *不是所有的方法都需要事务（只有一条修改操作，只读操作不需要事务控制）MySQL行级锁
+     * 使用基于注解的声明式事务能够提醒开发人员注意。
+     * 在事务方法中不要穿插网络请求RPC，HTTP等。
+     * 不是所有的方法都需要事务（只有一条修改操作，只读操作不需要事务控制）MySQL行级锁
      */
     @Transactional
     public SpikeExecution executeSpike(long spikeId, String userPhone, String md5) throws RepeatSpikeException, SpikeClosedException, SpikeException {
 
         try {
-            if (md5 == null || ! md5.equals(md5(spikeId))) {
+            if (md5 == null || !md5.equals(md5(spikeId))) {
                 throw new SpikeException("The url data was overwritten.");
             }
 
             int updateCount = spikeDao.reduceNumber(spikeId, new Date()); //减库存
             if (updateCount <= 0) {
                 throw new SpikeClosedException("Spike was closed.");
-            }
-            else {
+            } else {
                 int insertCount = successSpikeDao.insertSuccessSpike(spikeId, userPhone); //添加秒杀成功明细
                 if (insertCount <= 0) {
                     throw new RepeatSpikeException("Spike was repeated.");
-                }
-                else {
+                } else {
                     SuccessSpike successSpike = successSpikeDao.queryById(spikeId);
                     return new SpikeExecution(spikeId, StateEnum.SUCCESS, successSpike);
                 }
