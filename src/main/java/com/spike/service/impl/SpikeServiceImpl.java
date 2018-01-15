@@ -2,6 +2,7 @@ package com.spike.service.impl;
 
 import com.spike.dao.SpikeDao;
 import com.spike.dao.SuccessSpikeDao;
+import com.spike.dao.cache.RedisDao;
 import com.spike.dto.Exposer;
 import com.spike.dto.SpikeExecution;
 import com.spike.enums.StateEnum;
@@ -36,6 +37,8 @@ public class SpikeServiceImpl implements SpikeService {
 
     @Autowired
     private SpikeDao spikeDao;
+    @Autowired
+    private RedisDao redisDao;
 
     @Autowired
     private SuccessSpikeDao successSpikeDao;
@@ -44,7 +47,7 @@ public class SpikeServiceImpl implements SpikeService {
 
 
     public List<Spike> getSpikeList() {
-        return spikeDao.queryAll(0, 5);
+        return spikeDao.queryAll(0, 10);
     }
 
     public Spike getSpikeById(long spikeId) {
@@ -52,9 +55,17 @@ public class SpikeServiceImpl implements SpikeService {
     }
 
     public Exposer exportSpikeUrl(long spikeId) {
-        Spike spike = spikeDao.queryById(spikeId);
+        //get from redis
+        Spike spike = redisDao.getSpike(spikeId);
         if (spike == null) {
-            return new Exposer(false, spikeId);
+            //if it not in redis, get from mysql
+            spike = spikeDao.queryById(spikeId);
+            if (spike != null) {
+                //if it in mysql, cache it to redis again
+                redisDao.putSpike(spike);
+            } else {
+                return new Exposer(false, spikeId);
+            }
         }
         Date startTime = spike.getStartTime();
         Date endTime = spike.getEndTime();

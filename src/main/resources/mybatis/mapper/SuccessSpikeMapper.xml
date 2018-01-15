@@ -33,4 +33,12 @@
           WHERE ss.spike_id=#{spikeId};
     </select>
 
+    <select id="executeSpikeByProcedure" statementType="CALLABLE">
+        CALL execute_spike(#{spikeId,jdbcType=BIGINT,mode=IN},
+                           #{userPhone,jdbcType=VARCHAR,mode=IN},
+                           #{spikeTime,jdbcType=TIMESTAMP,mode=IN},
+                           #{ret,jdbcType=INTEGER,mode=OUT}
+        );
+    </select>
+
 </mapper>

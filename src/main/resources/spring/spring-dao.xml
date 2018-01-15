@@ -37,5 +37,9 @@ http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springfr
         <property name="basePackage" value="com.spike.dao"/>
     </bean>
 
+    <bean id="redisDao" class="com.spike.dao.cache.RedisDao">
+        <constructor-arg index="0" value="${redis.host}" />
+        <constructor-arg index="1" value="${redis.port}" />
+    </bean>
 
 </beans>

@@ -37,7 +37,7 @@ var spike = {
         }
     },
     handleSpike : function (spikeId, node) {
-        //TODO 处理秒杀逻辑
+        // 处理秒杀逻辑
         node.hide().html('<button class="btn btn-primary btn-lg" id="spikeBtn">开始秒杀</button>');
         console.info(spike.URL.exposer(spikeId));
         $.post(spike.URL.exposer(spikeId), {}, function (result) {
