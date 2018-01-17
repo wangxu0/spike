@@ -45,4 +45,5 @@ public interface SpikeService {
      */
     public SpikeExecution executeSpike(long spikeId, String userPhone, String md5) throws RepeatSpikeException,SpikeClosedException,SpikeException;
 
+    public SpikeExecution executeSpikeByProcedure(long spikeId, String userPhone, String md5) throws RepeatSpikeException, SpikeClosedException, SpikeException;
 }

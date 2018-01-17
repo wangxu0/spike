@@ -26,6 +26,12 @@ public class SpikeExecution {
         this.successSpike = successSpike;
     }
 
+    public SpikeExecution(long spikeId, StateEnum stateEnum) {
+        this.spikeId = spikeId;
+        this.state = stateEnum.getState();
+        this.stateInfo = stateEnum.getStateInfo();
+    }
+
     public long getSpikeId() {
         return spikeId;
     }

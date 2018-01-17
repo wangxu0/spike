@@ -15,15 +15,24 @@ public class RedisDao {
 
     private final JedisPool jedisPool;
 
-    public RedisDao(String ip, int port) {
+    private final String password;
+
+    public RedisDao(String ip, int port, String password) {
         this.jedisPool = new JedisPool(ip, port);
+        this.password = password;
+    }
+
+    private Jedis getResource() {
+        Jedis jedis = jedisPool.getResource();
+        jedis.auth(password);
+        return jedis;
     }
 
     private RuntimeSchema<Spike> runtimeSchema = RuntimeSchema.createFrom(Spike.class);
 
     public Spike getSpike(long spikeId) {
         try {
-            Jedis jedis = jedisPool.getResource();
+            Jedis jedis = getResource();
             try {
                 String key = "spike:"+spikeId;
                 byte[] bytes = jedis.get(key.getBytes());
@@ -43,7 +52,7 @@ public class RedisDao {
 
     public String putSpike(Spike spike) {
         try {
-            Jedis jedis = jedisPool.getResource();
+            Jedis jedis = getResource();
             try {
                 String key = "spike:" + spike.getSpikeId();
                 byte[] bytes = ProtostuffIOUtil.toByteArray(spike, runtimeSchema, LinkedBuffer.allocate(LinkedBuffer.DEFAULT_BUFFER_SIZE));
@@ -56,4 +65,5 @@ public class RedisDao {
         }
         return null;
     }
+
 }

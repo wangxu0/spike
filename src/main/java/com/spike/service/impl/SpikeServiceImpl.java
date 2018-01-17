@@ -20,7 +20,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * SpikeService接口实现
@@ -119,6 +121,33 @@ public class SpikeServiceImpl implements SpikeService {
         }
 
     }
+
+    public SpikeExecution executeSpikeByProcedure(long spikeId, String userPhone, String md5) throws SpikeException {
+        try {
+            if (md5 == null || !md5.equals(md5(spikeId))) {
+                throw new SpikeException("The url data was overwritten.");
+            }
+
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("spikeId", spikeId);
+            params.put("userPhone", userPhone);
+            params.put("spikeTime", new Date());
+            params.put("ret", null);
+            successSpikeDao.executeSpikeByProcedure(params);
+            Integer ret = (Integer) params.get("ret");
+            if (ret == null) ret = -2;
+            if (ret == 1) {
+                SuccessSpike successSpike = successSpikeDao.queryById(spikeId);
+                return new SpikeExecution(spikeId, StateEnum.SUCCESS, successSpike);
+            } else {
+                return new SpikeExecution(spikeId, StateEnum.stateOf(ret));
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            throw new SpikeException("Inner error" + e.getMessage()); //全部转化为运行期异常。
+        }
+    }
+
 
     private String md5(long spikeId) {
         String base = spikeId + "/" + salt;
